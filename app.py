@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import date
 from utils.auth import login, logout, current_user, hash_password
 from utils.db import get_client
+from utils.ui import mostra_logo
 
 st.set_page_config(page_title="Godenzi Lattoniere - Rapporti di lavoro", page_icon="🔧", layout="wide")
 
@@ -34,7 +35,6 @@ def bootstrap_first_manager_if_needed():
 
 
 def login_form():
-    st.title("🔧 Godenzi Lattoniere — Rapporti di lavoro")
     st.subheader("Accesso")
 
     with st.form("login_form"):
@@ -51,6 +51,7 @@ def login_form():
 
 def main():
     bootstrap_first_manager_if_needed()
+    mostra_logo()
 
     user = current_user()
 
@@ -67,7 +68,6 @@ def main():
             logout()
             st.rerun()
 
-    st.title("🔧 Godenzi Lattoniere")
     st.write(f"Ciao {user['nome']}, usa il menu a sinistra per navigare.")
     st.markdown(
         """
