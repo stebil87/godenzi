@@ -1,6 +1,6 @@
 import streamlit as st
 
-LOGO_PATH = "assets/godenzi.png"
+LOGO_PATH = "godenzi.png"
 
 
 def mostra_logo():
