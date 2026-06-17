@@ -3,6 +3,7 @@ from datetime import date, timedelta
 import pandas as pd
 from utils.auth import require_login, current_user
 from utils.db import get_client
+from utils.pdf_generator import genera_pdf_settimanale
 
 st.set_page_config(page_title="Le mie ore", page_icon="🕒", layout="wide")
 require_login()
@@ -180,14 +181,27 @@ for i, nome_giorno in enumerate(GIORNI_IT):
 
     st.divider()
 
-# --- Totale settimanale e invio ---
+# --- Totale settimanale, PDF e invio ---
 totale_ore = sum(float(r.get("ore") or 0) for r in righe)
 st.markdown(f"## Totale ore settimana: **{totale_ore:.2f}**")
 
-if modificabile:
-    if st.button("📨 Invia al manager per validazione", type="primary"):
-        aggiorna_stato(rapporto["id"], "inviato")
-        st.success("Rapporto inviato al manager.")
-        st.rerun()
-else:
-    st.caption("Per riaprire la modifica dopo l'invio, contatta il manager.")
+col_pdf, col_invio = st.columns(2)
+
+with col_pdf:
+    if st.button("📄 Scarica il mio PDF di questa settimana"):
+        pdf_bytes = genera_pdf_settimanale(user, rapporto, righe)
+        st.download_button(
+            "⬇️ Clicca qui per scaricare",
+            data=pdf_bytes,
+            file_name=f"rapporto_{user['nome']}_{user['cognome']}_{settimana_inizio.isoformat()}.pdf",
+            mime="application/pdf",
+        )
+
+with col_invio:
+    if modificabile:
+        if st.button("📨 Invia al manager per validazione", type="primary"):
+            aggiorna_stato(rapporto["id"], "inviato")
+            st.success("Rapporto inviato al manager.")
+            st.rerun()
+    else:
+        st.caption("Per riaprire la modifica dopo l'invio, contatta il manager.")
