@@ -3,9 +3,11 @@ from datetime import date, timedelta
 from utils.auth import require_manager, current_user
 from utils.db import get_client
 from utils.pdf_generator import genera_pdf_settimanale
+from utils.ui import mostra_logo
 
 st.set_page_config(page_title="Validazione rapporti", page_icon="✅", layout="wide")
 require_manager()
+mostra_logo()
 manager = current_user()
 client = get_client()
 
