@@ -1,8 +1,10 @@
 import streamlit as st
 from utils.auth import require_login, current_user, verify_password, change_password
+from utils.ui import mostra_logo
 
 st.set_page_config(page_title="Cambia password", page_icon="🔑")
 require_login()
+mostra_logo()
 user = current_user()
 
 st.title("🔑 Cambia la tua password")
