@@ -4,9 +4,11 @@ import pandas as pd
 from utils.auth import require_login, current_user
 from utils.db import get_client
 from utils.pdf_generator import genera_pdf_settimanale
+from utils.ui import mostra_logo
 
 st.set_page_config(page_title="Le mie ore", page_icon="🕒", layout="wide")
 require_login()
+mostra_logo()
 user = current_user()
 client = get_client()
 
