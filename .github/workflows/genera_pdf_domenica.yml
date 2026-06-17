@@ -1,0 +1,27 @@
+name: Genera PDF settimanali
+
+on:
+  schedule:
+    - cron: "0 23 * * 0"
+  workflow_dispatch: {}
+
+jobs:
+  genera-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout codice
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installa dipendenze
+        run: pip install supabase reportlab
+
+      - name: Esegui generazione PDF
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: python jobs/genera_pdf_settimanali.py
